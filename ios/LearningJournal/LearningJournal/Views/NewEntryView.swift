@@ -8,6 +8,8 @@ struct NewEntryView: View {
 
     @State private var question1 = ""
     @State private var question2 = ""
+    @State private var sketchDrawing = PKDrawing()
+    @State private var showSketchPad = false
     @State private var isSaving = false
     @State private var errorMessage: String?
 
@@ -15,7 +17,7 @@ struct NewEntryView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
-                    // Question 1
+                    // Question 1 — Scribble-compatible text field
                     VStack(alignment: .leading, spacing: 8) {
                         Text("¿Qué hiciste hoy?")
                             .font(.headline)
@@ -27,7 +29,7 @@ struct NewEntryView: View {
                         )
                     }
 
-                    // Question 2
+                    // Question 2 — Scribble-compatible text field
                     VStack(alignment: .leading, spacing: 8) {
                         Text("¿Qué aprendiste?")
                             .font(.headline)
@@ -37,6 +39,32 @@ struct NewEntryView: View {
                             placeholder: "Escribe lo que aprendiste…",
                             minHeight: 120
                         )
+                    }
+
+                    // PencilKit sketch canvas (collapsible)
+                    VStack(alignment: .leading, spacing: 8) {
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                showSketchPad.toggle()
+                            }
+                        } label: {
+                            Label(
+                                showSketchPad ? "Ocultar boceto" : "Agregar boceto",
+                                systemImage: showSketchPad
+                                    ? "chevron.up"
+                                    : "pencil.tip.crop.circle"
+                            )
+                            .font(.subheadline.weight(.medium))
+                        }
+                        .buttonStyle(.bordered)
+                        .tint(.accentColor)
+
+                        if showSketchPad {
+                            SketchPadView(drawing: $sketchDrawing)
+                                .transition(
+                                    .opacity.combined(with: .move(edge: .top))
+                                )
+                        }
                     }
                 }
                 .padding()
@@ -91,6 +119,8 @@ struct NewEntryView: View {
 }
 
 /// A multi-line text field that supports Apple Pencil Scribble input.
+/// TextEditor natively supports Scribble — handwriting with Apple Pencil
+/// is automatically converted to text on iPad.
 struct ScribbleTextField: View {
     @Binding var text: String
     let placeholder: String
