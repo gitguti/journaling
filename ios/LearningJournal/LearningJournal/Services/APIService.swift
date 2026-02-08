@@ -6,6 +6,7 @@ class APIService {
     // Change this to your deployed backend URL
     // Use ngrok for mobile testing: ngrok http 8000
     private let baseURL = "https://brachial-unaccordant-venus.ngrok-free.dev"
+    private let apiKey = "journal-web-2026-secret"
 
     private let decoder: JSONDecoder = {
         let d = JSONDecoder()
@@ -46,6 +47,7 @@ class APIService {
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         // Bypass ngrok browser warning
         request.setValue("1", forHTTPHeaderField: "ngrok-skip-browser-warning")
         request.setValue("iOS App", forHTTPHeaderField: "User-Agent")
@@ -77,6 +79,7 @@ class APIService {
         let url = URL(string: "\(baseURL)/entries")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         // Bypass ngrok browser warning
         request.setValue("1", forHTTPHeaderField: "ngrok-skip-browser-warning")
         request.setValue("iOS App", forHTTPHeaderField: "User-Agent")
@@ -107,6 +110,7 @@ class APIService {
         let url = URL(string: "\(baseURL)/entries/\(id)")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         // Bypass ngrok browser warning
         request.setValue("1", forHTTPHeaderField: "ngrok-skip-browser-warning")
         request.setValue("iOS App", forHTTPHeaderField: "User-Agent")
@@ -130,6 +134,7 @@ class APIService {
         request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         // Bypass ngrok browser warning
         request.setValue("1", forHTTPHeaderField: "ngrok-skip-browser-warning")
         request.setValue("iOS App", forHTTPHeaderField: "User-Agent")
@@ -156,6 +161,7 @@ class APIService {
         let url = URL(string: "\(baseURL)/tags")!
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         // Bypass ngrok browser warning
         request.setValue("1", forHTTPHeaderField: "ngrok-skip-browser-warning")
         request.setValue("iOS App", forHTTPHeaderField: "User-Agent")
