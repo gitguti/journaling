@@ -5,6 +5,7 @@ A journaling app for capturing daily learnings with Apple Pencil support on iPad
 ## Tech Stack
 
 - **iOS App**: SwiftUI + PencilKit (native handwriting recognition via Scribble)
+- **Web PWA**: React + Vite + TypeScript (installable, offline-capable)
 - **Backend**: FastAPI (Python)
 - **Database**: Neo4j AuraDB Free
 
@@ -27,6 +28,15 @@ A journaling app for capturing daily learnings with Apple Pencil support on iPad
 │           ├── Models/      # Data models
 │           ├── Views/       # SwiftUI views
 │           └── Services/    # API client
+├── web/               # React PWA web app
+│   ├── src/
+│   │   ├── api/           # API client
+│   │   ├── components/    # Reusable UI components
+│   │   ├── i18n/          # Translations (ES/EN)
+│   │   ├── pages/         # Page components
+│   │   └── types/         # TypeScript interfaces
+│   ├── public/icons/      # PWA icons
+│   └── vite.config.ts     # Vite + PWA config
 └── README.md
 ```
 
@@ -39,12 +49,16 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Add `API_KEY` and `ALLOWED_ORIGINS` to the backend `.env` for authentication and CORS:
+
 Create a `.env` file in `backend/`:
 
 ```
 NEO4J_URI=neo4j+s://your-instance.databases.neo4j.io
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=your-password
+API_KEY=your-secret-api-key-here
+ALLOWED_ORIGINS=["http://localhost:5173"]
 ```
 
 Run the server:
@@ -68,6 +82,40 @@ python -m app.seed
 | GET    | `/entries/{id}`       | Get a single entry             |
 | PATCH  | `/entries/{id}/tags`  | Update tags for an entry       |
 | GET    | `/tags`               | List all available tags        |
+
+## Web PWA
+
+```bash
+cd web
+npm install
+```
+
+Create a `.env` file in `web/`:
+
+```
+VITE_API_URL=http://localhost:8000
+VITE_API_KEY=your-secret-api-key-here
+```
+
+Run the dev server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+npm run preview
+```
+
+| Variable | Description |
+|---|---|
+| `VITE_API_URL` | Backend API URL (default: `http://localhost:8000`) |
+| `VITE_API_KEY` | API key matching the backend `API_KEY` setting |
+
+The web app supports Spanish (default) and English with a language toggle. It is installable as a PWA with offline caching for entries and tags.
 
 ## iOS App
 

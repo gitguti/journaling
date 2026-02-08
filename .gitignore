@@ -35,6 +35,10 @@ DerivedData/
 *.dSYM.zip
 *.dSYM
 
+# Node / Web
+node_modules/
+web/dist/
+
 # Docker
 .docker/
 
